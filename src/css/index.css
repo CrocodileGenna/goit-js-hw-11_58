@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+}
+.photo-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+.photo-cards {
+  margin-right: 20px;
+}
+.is-hidden {
+  display: none;
+}
