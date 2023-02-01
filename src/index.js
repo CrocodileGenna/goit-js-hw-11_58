@@ -10,38 +10,43 @@ const variables = {
   photoCard: document.querySelector('.photo-card'),
 };
 
-const BACE_URL = 'https://pixabay.com/api/';
-
 const FetchSerchValue = new FetchSerch();
 
-// variables.allForm.addEventListener('submit', el => {
-//   console.log(el.target.value);
-// });
+variables.allForm.addEventListener('submit', searchForm);
 
-variables.serchBtn.addEventListener('click', serchBtn);
-
-let serchValue = variables.input.value;
-
-async function serchBtn(val) {
+async function searchForm(val) {
   val.preventDefault();
   variables.photoCard.innerHTML = '';
-  let serchValue = variables.input.value;
-  if (serchValue === '') {
+  const valueInInput = variables.input.value;
+  console.log(valueInInput);
+  if (valueInInput === '') {
     Notiflix.Notify.failure(`Введіть пошуковий запит.`);
     return;
   }
-  console.log(serchValue);
-  const valueBeck = await FetchSerchValue.fetchSerchValue(serchValue);
-  console.log(valueBeck);
-  if (valueBeck.hits.length === 0) {
+  const resultSearch = await FetchSerchValue.fetchSerchValue(valueInInput);
+  console.log(resultSearch);
+  if (resultSearch.totalHits === 0) {
     Notiflix.Notify.failure(
-      `Oops, there is no country with that ${serchValue}`
+      `Oops, there is no country with that ${valueInInput}`
     );
     return;
   }
-  Notiflix.Notify.success(`Sol lucet omnibus. Result: ${valueBeck.totalHits}`);
+  renderQueryResult(resultSearch);
+  FetchSerchValue.incrementPage();
   variables.moreBtn.classList.remove('is-hidden');
-  return await renderQueryResult(valueBeck);
+  // Notiflix.Notify.success(
+  //   `Sol lucet omnibus. Result: ${resultSearch.totalHits}`
+  // );
+}
+variables.moreBtn.addEventListener('click', moreBtn);
+
+async function moreBtn(val) {
+  val.preventDefault();
+  variables.photoCard.innerHTML = '';
+  const valueInInput = variables.input.value;
+  const resultSearch = await FetchSerchValue.fetchSerchValue(valueInInput);
+  renderQueryResult(resultSearch);
+  FetchSerchValue.incrementPage();
 }
 
 function renderQueryResult({ hits }) {
@@ -67,13 +72,26 @@ function renderQueryResult({ hits }) {
     }
   );
 }
+// variables.serchBtn.addEventListener('click', serchBtn);
 
-// variables.moreBtn.addEventListener('click', moreBtn);
-
-// async function moreBtn(val) {
+// async function serchBtn(val) {
 //   val.preventDefault();
-//   const moreRes = await FetchSerchValue.fetchSerchValue(serchValue);
-//   FetchSerchValue.incrementPage();
-//   const moreResJson = await moreRes.json();
-//   console.log(moreResJson);
+//   variables.photoCard.innerHTML = '';
+//   let serchValue = variables.input.value;
+//   if (serchValue === '') {
+//     Notiflix.Notify.failure(`Введіть пошуковий запит.`);
+//     return;
+//   }
+//   console.log(serchValue);
+//   const valueBeck = await FetchSerchValue.fetchSerchValue(serchValue);
+//   console.log(valueBeck);
+//   if (valueBeck.hits.length === 0) {
+//     Notiflix.Notify.failure(
+//       `Oops, there is no country with that ${serchValue}`
+//     );
+//     return;
+//   }
+//   Notiflix.Notify.success(`Sol lucet omnibus. Result: ${valueBeck.totalHits}`);
+//   variables.moreBtn.classList.remove('is-hidden');
+//   return await renderQueryResult(valueBeck);
 // }
