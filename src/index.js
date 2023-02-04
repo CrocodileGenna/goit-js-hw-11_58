@@ -20,8 +20,10 @@ variables.allForm.addEventListener('submit', searchForm);
 async function searchForm(val) {
   val.preventDefault();
   variables.photoCard.innerHTML += '';
+
   const valueInInput = val.currentTarget.elements.searchQuery.value;
   const resultSearch = await FetchSerchValue.fetchSerchValue(valueInInput);
+
   try {
     if (resultSearch.hits === 0) {
       Notiflix.Notify.failure(
