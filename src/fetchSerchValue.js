@@ -8,7 +8,7 @@
 //   return resJson;
 // }
 
-// const BACE_URL = 'https://pixabay.com/api/';
+const BACE_URL = 'https://pixabay.com/api/';
 export default class FetchSerch {
   constructor() {
     this.serchQuery = '';
@@ -19,10 +19,9 @@ export default class FetchSerch {
   async fetchSerchValue(val) {
     this.serchQuery = val;
     const result = await fetch(
-      `https://pixabay.com/api/?key=30100311-f3864219c2c65e8e904a2d1d0&q=${this.serchQuery}&image_type=photo&per_page=20&page=${this.page}&safesearch=true&orientation=horizontal`
+      `${BACE_URL}?key=30100311-f3864219c2c65e8e904a2d1d0&q=${this.serchQuery}&image_type=photo&per_page=20&page=${this.page}&safesearch=true&orientation=horizontal`
     );
     const resJson = await result.json();
-    this.storage.push(resJson.hits);
     return resJson;
   }
   resetPage() {
@@ -30,10 +29,8 @@ export default class FetchSerch {
   }
 
   incrementPage() {
+    console.log(this.page);
     this.page += 1;
-  }
-  previousPage() {
-    this.page -= 1;
   }
 
   get query() {
